@@ -1,0 +1,5 @@
+node_modules/
+
+# 敏感配置 — 请按 .example 模板创建真实配置文件
+**/env.json
+miniprogram/config/env.js

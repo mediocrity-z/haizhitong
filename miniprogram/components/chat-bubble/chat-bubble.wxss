@@ -1,0 +1,90 @@
+.bubble-wrapper {
+  display: flex;
+  padding: 16rpx 24rpx;
+  align-items: flex-start;
+}
+
+.bubble-wrapper.user {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 16rpx;
+}
+
+.avatar-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, #e8913a, #f0a55a);
+}
+
+.bubble-body {
+  max-width: 70%;
+}
+
+.bubble-content {
+  padding: 20rpx 28rpx;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+.ai-bg {
+  background: #ffffff;
+  border-top-left-radius: 4rpx;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.user-bg {
+  background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+  color: #fff;
+  border-top-right-radius: 4rpx;
+}
+
+.bubble-time {
+  font-size: 22rpx;
+  color: #bdc3c7;
+  margin-top: 8rpx;
+  padding: 0 8rpx;
+}
+
+.bubble-wrapper.user .bubble-time {
+  text-align: right;
+}
+
+.quick-replies {
+  margin-top: 16rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.quick-reply-btn {
+  background: rgba(26, 58, 92, 0.08);
+  color: #1a3a5c;
+  border: 1px solid rgba(26, 58, 92, 0.15);
+  border-radius: 32rpx;
+  padding: 10rpx 24rpx;
+  font-size: 24rpx;
+}
+
+.quick-reply-btn:active {
+  background: #1a3a5c;
+  color: #fff;
+}

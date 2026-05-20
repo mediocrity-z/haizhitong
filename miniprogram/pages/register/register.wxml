@@ -1,0 +1,194 @@
+<view class="register-page">
+  <!-- 顶部步骤条 -->
+  <view class="steps-bar">
+    <view class="step {{currentStep >= 1 ? 'active' : ''}} {{currentStep > 1 ? 'done' : ''}}">
+      <view class="step-num">{{currentStep > 1 ? '✓' : '1'}}</view>
+      <text class="step-label">基本信息</text>
+    </view>
+    <view class="step-line {{currentStep > 1 ? 'active' : ''}}"></view>
+    <view class="step {{currentStep >= 2 ? 'active' : ''}} {{currentStep > 2 ? 'done' : ''}}">
+      <view class="step-num">{{currentStep > 2 ? '✓' : '2'}}</view>
+      <text class="step-label">工作经历</text>
+    </view>
+    <view class="step-line {{currentStep > 2 ? 'active' : ''}}"></view>
+    <view class="step {{currentStep >= 3 ? 'active' : ''}} {{currentStep > 3 ? 'done' : ''}}">
+      <view class="step-num">{{currentStep > 3 ? '✓' : '3'}}</view>
+      <text class="step-label">教育背景</text>
+    </view>
+    <view class="step-line {{currentStep > 3 ? 'active' : ''}}"></view>
+    <view class="step {{currentStep >= 4 ? 'active' : ''}}">
+      <view class="step-num">4</view>
+      <text class="step-label">求职意向</text>
+    </view>
+  </view>
+
+  <view class="steps-content">
+    <!-- Step 1: 基本信息 -->
+    <view wx:if="{{currentStep == 1}}" class="form-card card">
+      <view class="card-title">基本信息</view>
+      <view class="card-desc">请填写您的真实信息，用于生成简历</view>
+
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>姓名</view>
+        <input class="form-input" value="{{form.personalInfo.name}}" placeholder="请输入姓名" bindinput="onFieldChange" data-field="personalInfo.name" maxlength="20" />
+      </view>
+
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>性别</view>
+        <radio-group class="form-radio-group" bindchange="onRadioChange" data-field="personalInfo.gender">
+          <label class="form-radio" wx:for="{{genders}}" wx:key="value">
+            <radio value="{{item.value}}" checked="{{form.personalInfo.gender == item.value}}" color="#1a3a5c" />
+            <text>{{item.label}}</text>
+          </label>
+        </radio-group>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>年龄</view>
+        <input class="form-input" type="number" value="{{form.personalInfo.age}}" placeholder="请输入年龄" bindinput="onFieldChange" data-field="personalInfo.age" maxlength="2" />
+      </view>
+
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>联系电话</view>
+        <input class="form-input" type="number" value="{{form.personalInfo.phone}}" placeholder="请输入手机号" bindinput="onFieldChange" data-field="personalInfo.phone" maxlength="11" />
+      </view>
+
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>电子邮箱</view>
+        <input class="form-input" value="{{form.personalInfo.email}}" placeholder="请输入邮箱" bindinput="onFieldChange" data-field="personalInfo.email" />
+      </view>
+    </view>
+
+    <!-- Step 2: 工作经历 -->
+    <view wx:if="{{currentStep == 2}}" class="form-card card">
+      <view class="card-title">工作经历</view>
+      <view class="card-desc">添加您的过往工作经历，可填写多条</view>
+
+      <block wx:for="{{form.workExperience}}" wx:key="index">
+        <view class="section-card">
+          <view class="section-card-header">
+            <text class="section-card-title">工作经历 {{index + 1}}</text>
+            <view class="section-card-del" bindtap="removeWorkExp" data-index="{{index}}">删除</view>
+          </view>
+
+          <view class="form-group">
+            <view class="form-label">公司/单位名称</view>
+            <input class="form-input" value="{{item.company}}" placeholder="请输入公司名称" bindinput="onArrayFieldChange" data-array="workExperience" data-index="{{index}}" data-field="company" />
+          </view>
+
+          <view class="form-group">
+            <view class="form-label">职位</view>
+            <input class="form-input" value="{{item.position}}" placeholder="请输入职位" bindinput="onArrayFieldChange" data-array="workExperience" data-index="{{index}}" data-field="position" />
+          </view>
+
+          <view class="form-group">
+            <view class="form-label">工作时间</view>
+            <input class="form-input" value="{{item.period}}" placeholder="例：2020-01 至 2023-06" bindinput="onArrayFieldChange" data-array="workExperience" data-index="{{index}}" data-field="period" />
+          </view>
+
+          <view class="form-group">
+            <view class="form-label">工作职责</view>
+            <textarea class="form-textarea" value="{{item.duties}}" placeholder="请描述您的主要工作内容和职责" bindinput="onArrayFieldChange" data-array="workExperience" data-index="{{index}}" data-field="duties" maxlength="500" />
+          </view>
+        </view>
+      </block>
+
+      <view class="add-btn" bindtap="addWorkExp">
+        <text class="add-icon">+</text>
+        <text>添加工作经历</text>
+      </view>
+    </view>
+
+    <!-- Step 3: 教育背景 -->
+    <view wx:if="{{currentStep == 3}}" class="form-card card">
+      <view class="card-title">教育背景</view>
+      <view class="card-desc">添加您的教育经历</view>
+
+      <block wx:for="{{form.education}}" wx:key="index">
+        <view class="section-card">
+          <view class="section-card-header">
+            <text class="section-card-title">教育经历 {{index + 1}}</text>
+            <view class="section-card-del" bindtap="removeEducation" data-index="{{index}}">删除</view>
+          </view>
+
+          <view class="form-group">
+            <view class="form-label">学校名称</view>
+            <input class="form-input" value="{{item.school}}" placeholder="请输入学校名称" bindinput="onArrayFieldChange" data-array="education" data-index="{{index}}" data-field="school" />
+          </view>
+
+          <view class="form-group">
+            <view class="form-label">专业</view>
+            <input class="form-input" value="{{item.major}}" placeholder="请输入专业" bindinput="onArrayFieldChange" data-array="education" data-index="{{index}}" data-field="major" />
+          </view>
+
+          <view class="form-group">
+            <view class="form-label">学历</view>
+            <picker mode="selector" range="{{educationLevels}}" range-key="label" bindchange="onPickerChange" data-array="education" data-index="{{index}}" data-field="degree">
+              <view class="form-picker">
+                <text class="{{item.degree ? '' : 'placeholder'}}">{{item.degree || '请选择学历'}}</text>
+                <text class="picker-arrow">▼</text>
+              </view>
+            </picker>
+          </view>
+
+          <view class="form-group">
+            <view class="form-label">就读时间</view>
+            <input class="form-input" value="{{item.period}}" placeholder="例：2016-09 至 2020-06" bindinput="onArrayFieldChange" data-array="education" data-index="{{index}}" data-field="period" />
+          </view>
+        </view>
+      </block>
+
+      <view class="add-btn" bindtap="addEducation">
+        <text class="add-icon">+</text>
+        <text>添加教育经历</text>
+      </view>
+    </view>
+
+    <!-- Step 4: 求职意向 -->
+    <view wx:if="{{currentStep == 4}}" class="form-card card">
+      <view class="card-title">求职意向</view>
+
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>目标国家</view>
+        <picker mode="selector" range="{{targetCountries}}" bindchange="onTargetCountryChange">
+          <view class="form-picker">
+            <text class="{{form.desiredCountry ? '' : 'placeholder'}}">{{form.desiredCountry || '请选择目标国家'}}</text>
+            <text class="picker-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label"><text class="required">*</text>期望职位</view>
+        <input class="form-input" value="{{form.desiredPosition}}" placeholder="请输入期望职位" bindinput="onFieldChange" data-field="desiredPosition" maxlength="30" />
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">技能特长</view>
+        <view class="skills-input-area">
+          <view class="skill-tag" wx:for="{{form.skills}}" wx:key="*this">
+            <text>{{item}}</text>
+            <text class="skill-del" bindtap="removeSkill" data-index="{{index}}">×</text>
+          </view>
+          <input class="skill-input" value="{{skillInput}}" placeholder="输入技能后按回车添加" bindinput="onSkillInputChange" bindconfirm="addSkill" maxlength="20" />
+        </view>
+      </view>
+
+      <view class="form-group">
+        <view class="form-label">补充说明</view>
+        <textarea class="form-textarea" value="{{form.remark}}" placeholder="其他需要体现在简历上的信息（选填）" bindinput="onFieldChange" data-field="remark" maxlength="300" />
+      </view>
+
+      <!-- 提交按钮 -->
+      <button class="btn-primary submit-btn" bindtap="submitForm" disabled="{{submitting}}">
+        {{submitting ? 'AI 生成中...' : '生成简历'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="steps-actions">
+    <button class="action-btn prev" wx:if="{{currentStep > 1}}" bindtap="prevStep">上一步</button>
+    <button class="action-btn next" wx:if="{{currentStep < 4}}" bindtap="nextStep">下一步</button>
+  </view>
+</view>

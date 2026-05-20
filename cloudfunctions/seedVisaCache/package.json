@@ -1,0 +1,9 @@
+{
+  "name": "seedVisaCache",
+  "version": "1.0.0",
+  "description": "预填充签证缓存数据",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

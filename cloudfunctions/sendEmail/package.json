@@ -1,0 +1,9 @@
+{
+  "name": "sendEmail",
+  "version": "1.0.0",
+  "description": "邮件通知中介公司",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

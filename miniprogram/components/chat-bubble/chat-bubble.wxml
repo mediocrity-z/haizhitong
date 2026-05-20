@@ -1,0 +1,24 @@
+<view class="bubble-wrapper {{message.role == 'user' ? 'user' : 'assistant'}}">
+  <view class="avatar" wx:if="{{message.role == 'assistant'}}">
+    <view class="avatar-icon">狮</view>
+  </view>
+  <view class="bubble-body">
+    <view class="bubble-content {{message.role == 'user' ? 'user-bg' : 'ai-bg'}}">
+      <text wx:if="{{!message.isRich}}" selectable>{{message.content}}</text>
+      <view wx:if="{{message.isQuickReply}}" class="quick-replies">
+        <view
+          wx:for="{{message.quickReplies}}"
+          wx:key="*this"
+          class="quick-reply-btn"
+          data-reply="{{item}}"
+          bindtap="onTapQuickReply"
+        >{{item}}</view>
+      </view>
+      <rich-text wx:if="{{message.isRich}}" nodes="{{message.content}}"></rich-text>
+    </view>
+    <view class="bubble-time">{{timeStr}}</view>
+  </view>
+  <view class="avatar" wx:if="{{message.role == 'user'}}">
+    <view class="avatar-icon user-avatar">我</view>
+  </view>
+</view>

@@ -1,0 +1,146 @@
+.knowledge-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding-bottom: 40rpx;
+}
+
+/* 分类卡片 */
+.category-list {
+  padding: 24rpx;
+}
+
+.category-card {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.category-icon {
+  font-size: 52rpx;
+  margin-right: 24rpx;
+}
+
+.category-info {
+  flex: 1;
+}
+
+.category-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.category-desc {
+  font-size: 24rpx;
+  color: #95a5a6;
+  margin-top: 4rpx;
+}
+
+.category-arrow {
+  font-size: 28rpx;
+  color: #bdc3c7;
+}
+
+/* 返回按钮 */
+.back-btn {
+  padding: 20rpx 32rpx;
+  font-size: 26rpx;
+  color: #1a3a5c;
+  font-weight: 500;
+}
+
+.back-btn:active {
+  opacity: 0.7;
+}
+
+/* 分类头部 */
+.category-header {
+  display: flex;
+  align-items: center;
+  padding: 32rpx;
+  margin: 0 24rpx 16rpx;
+}
+
+.cat-icon-large {
+  font-size: 72rpx;
+  margin-right: 24rpx;
+}
+
+.cat-title-large {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a3a5c;
+}
+
+/* 文章卡片 */
+.article-list {
+  padding-bottom: 40rpx;
+}
+
+.article-card {
+  margin: 0 24rpx 16rpx;
+  padding: 28rpx;
+}
+
+.article-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8rpx;
+}
+
+.article-preview {
+  font-size: 26rpx;
+  color: #7f8c8d;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 文章详情 */
+.detail-card {
+  margin: 8rpx 24rpx 40rpx;
+  padding: 40rpx 32rpx;
+}
+
+.detail-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a3a5c;
+  margin-bottom: 32rpx;
+  padding-bottom: 24rpx;
+  border-bottom: 2rpx solid #e0e6ed;
+}
+
+.detail-p {
+  font-size: 28rpx;
+  line-height: 1.8;
+  color: #2c3e50;
+  margin-bottom: 16rpx;
+}
+
+.detail-h3 {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1a3a5c;
+  margin: 32rpx 0 16rpx;
+}
+
+.detail-tip {
+  background: #fff3e0;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #e8913a;
+  margin: 16rpx 0;
+  border-left: 6rpx solid #e8913a;
+}
+
+.detail-list-item {
+  font-size: 28rpx;
+  color: #2c3e50;
+  line-height: 1.8;
+  margin-bottom: 8rpx;
+  padding-left: 8rpx;
+}

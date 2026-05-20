@@ -1,0 +1,80 @@
+<view class="resume-card {{compact ? 'compact' : ''}}">
+  <view class="resume-header">
+    <view class="resume-name">{{resume.personalInfo.name || '未填写'}}</view>
+    <view class="resume-badge">{{resume.passportType || 'WP'}}</view>
+  </view>
+
+  <view class="resume-section" wx:if="{{resume.personalInfo}}">
+    <view class="section-title">基本信息</view>
+    <view class="info-grid">
+      <view class="info-item">
+        <text class="info-label">性别</text>
+        <text class="info-value">{{resume.personalInfo.gender == 'male' ? '男' : '女'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">年龄</text>
+        <text class="info-value">{{resume.personalInfo.age}}岁</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">电话</text>
+        <text class="info-value">{{resume.personalInfo.phone}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">邮箱</text>
+        <text class="info-value">{{resume.personalInfo.email}}</text>
+      </view>
+      <view class="info-item" wx:if="{{resume.personalInfo.Nric}}">
+        <text class="info-label">护照号</text>
+        <text class="info-value">{{resume.personalInfo.Nric}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="resume-section" wx:if="{{resume.workExperience && resume.workExperience.length}}">
+    <view class="section-title">工作经历</view>
+    <view class="timeline" wx:for="{{resume.workExperience}}" wx:key="index">
+      <view class="timeline-dot"></view>
+      <view class="timeline-content">
+        <view class="timeline-title">{{item.company}} · {{item.position}}</view>
+        <view class="timeline-period">{{item.period}}</view>
+        <view class="timeline-desc">{{item.duties}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="resume-section" wx:if="{{resume.education && resume.education.length}}">
+    <view class="section-title">教育背景</view>
+    <view class="timeline" wx:for="{{resume.education}}" wx:key="index">
+      <view class="timeline-dot"></view>
+      <view class="timeline-content">
+        <view class="timeline-title">{{item.school}} · {{item.major}}</view>
+        <view class="timeline-period">{{item.period}} · {{item.degree}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="resume-section" wx:if="{{resume.skills && resume.skills.length}}">
+    <view class="section-title">技能特长</view>
+    <view class="skills-tags">
+      <view class="skill-tag" wx:for="{{resume.skills}}" wx:key="*this">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="resume-section" wx:if="{{resume.desiredPosition}}">
+    <view class="section-title">求职意向</view>
+    <view class="info-grid">
+      <view class="info-item">
+        <text class="info-label">期望职位</text>
+        <text class="info-value">{{resume.desiredPosition}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">目标国家</text>
+        <text class="info-value">{{resume.desiredCountry || '新加坡'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">准证类型</text>
+        <text class="info-value">{{resume.passportType || 'WP'}}</text>
+      </view>
+    </view>
+  </view>
+</view>

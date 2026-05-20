@@ -1,0 +1,59 @@
+<view class="knowledge-page">
+  <view class="page-header">
+    <view class="page-title">海外生活知识库</view>
+    <view class="page-subtitle">实用的海外生活指南</view>
+  </view>
+
+  <!-- 分类列表 -->
+  <view class="category-list" wx:if="{{!currentCategory}}">
+    <view
+      class="category-card card"
+      wx:for="{{categories}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onSelectCategory"
+    >
+      <view class="category-icon">{{item.icon}}</view>
+      <view class="category-info">
+        <view class="category-name">{{item.name}}</view>
+        <view class="category-desc">{{item.articles.length}} 篇文章</view>
+      </view>
+      <view class="category-arrow">→</view>
+    </view>
+  </view>
+
+  <!-- 文章列表 -->
+  <view class="article-list" wx:if="{{currentCategory && !currentArticle}}">
+    <view class="back-btn" bindtap="onBack">← 返回分类</view>
+    <view class="category-header card">
+      <view class="cat-icon-large">{{currentCategory.icon}}</view>
+      <view class="cat-title-large">{{currentCategory.name}}</view>
+    </view>
+    <view
+      class="article-card card"
+      wx:for="{{currentCategory.articles}}"
+      wx:key="id"
+      data-index="{{index}}"
+      bindtap="onSelectArticle"
+    >
+      <view class="article-title">{{item.title}}</view>
+      <view class="article-preview">{{item.summary}}</view>
+    </view>
+  </view>
+
+  <!-- 文章详情 -->
+  <view class="article-detail" wx:if="{{currentArticle}}">
+    <view class="back-btn" bindtap="onBackToArticles">← 返回文章列表</view>
+    <view class="detail-card card">
+      <view class="detail-title">{{currentArticle.title}}</view>
+      <view class="detail-body">
+        <block wx:for="{{currentArticle.content}}" wx:key="index">
+          <view wx:if="{{item.t == 'p'}}" class="detail-p">{{item.v}}</view>
+          <view wx:if="{{item.t == 'h'}}" class="detail-h3">{{item.v}}</view>
+          <view wx:if="{{item.t == 'tip'}}" class="detail-tip">{{item.v}}</view>
+          <view wx:if="{{item.t == 'li'}}" class="detail-list-item">· {{item.v}}</view>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>

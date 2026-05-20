@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/register/register",
+    "pages/resume/resume",
+    "pages/visa/visa",
+    "pages/knowledge/knowledge",
+    "pages/placeholder/placeholder"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#1a3a5c",
+    "navigationBarTitleText": "狮城助手",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f7fa"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#1a3a5c",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "AI 咨询",
+        "iconPath": "images/tab-chat.jpg",
+        "selectedIconPath": "images/tab-chat-active.jpg"
+      },
+      {
+        "pagePath": "pages/register/register",
+        "text": "AI简历",
+        "iconPath": "images/tab-register.jpg",
+        "selectedIconPath": "images/tab-register-active.jpg"
+      },
+      {
+        "pagePath": "pages/visa/visa",
+        "text": "签证清单",
+        "iconPath": "images/tab-visa.jpg",
+        "selectedIconPath": "images/tab-visa-active.jpg"
+      },
+      {
+        "pagePath": "pages/knowledge/knowledge",
+        "text": "海外生活",
+        "iconPath": "images/tab-knowledge.jpg",
+        "selectedIconPath": "images/tab-knowledge-active.jpg"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "cloud": true
+}

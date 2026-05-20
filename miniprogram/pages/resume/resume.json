@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "我的简历",
+  "usingComponents": {
+    "resume-card": "/components/resume-card/resume-card"
+  }
+}

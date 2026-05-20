@@ -1,0 +1,227 @@
+.register-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding-bottom: 120rpx;
+}
+
+/* 步骤条 */
+.steps-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 24rpx;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  flex-shrink: 0;
+}
+
+.step-num {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: #e0e6ed;
+  color: #95a5a6;
+  font-size: 24rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.step.active .step-num {
+  background: #1a3a5c;
+  color: #fff;
+}
+
+.step.done .step-num {
+  background: #2ecc71;
+  color: #fff;
+}
+
+.step-label {
+  font-size: 22rpx;
+  color: #95a5a6;
+}
+
+.step.active .step-label {
+  color: #1a3a5c;
+  font-weight: 500;
+}
+
+.step-line {
+  flex: 1;
+  height: 2rpx;
+  background: #e0e6ed;
+  margin: 0 8rpx;
+  margin-bottom: 32rpx;
+}
+
+.step-line.active {
+  background: #2ecc71;
+}
+
+/* 表单内容 */
+.steps-content {
+  padding: 24rpx;
+}
+
+.form-card {
+  padding: 40rpx 32rpx;
+}
+
+.card-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a3a5c;
+  margin-bottom: 8rpx;
+}
+
+.card-desc {
+  font-size: 26rpx;
+  color: #95a5a6;
+  margin-bottom: 32rpx;
+}
+
+/* 子卡片 */
+.section-card {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  border: 1px solid #e8ecf0;
+}
+
+.section-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.section-card-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a3a5c;
+}
+
+.section-card-del {
+  font-size: 24rpx;
+  color: #e74c3c;
+  padding: 4rpx 12rpx;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  height: 80rpx;
+  border: 2rpx dashed #bdc3c7;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  color: #7f8c8d;
+  background: transparent;
+}
+
+.add-btn:active {
+  background: #f0f2f5;
+}
+
+.add-icon {
+  font-size: 36rpx;
+  font-weight: 300;
+  color: #1a3a5c;
+}
+
+.picker-arrow {
+  font-size: 20rpx;
+  color: #bdc3c7;
+}
+
+.placeholder {
+  color: #bdc3c7;
+}
+
+/* 技能输入 */
+.skills-input-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  padding: 16rpx;
+  border: 1px solid #e0e6ed;
+  border-radius: 12rpx;
+  background: #fff;
+  min-height: 88rpx;
+  align-items: center;
+}
+
+.skill-tag {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  background: rgba(26, 58, 92, 0.08);
+  color: #1a3a5c;
+  padding: 6rpx 16rpx;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  border: 1px solid rgba(26, 58, 92, 0.12);
+}
+
+.skill-del {
+  font-size: 28rpx;
+  color: #95a5a6;
+  margin-left: 4rpx;
+}
+
+.skill-input {
+  flex: 1;
+  min-width: 120rpx;
+  height: 52rpx;
+  font-size: 26rpx;
+}
+
+.submit-btn {
+  margin-top: 32rpx;
+}
+
+/* 底部操作栏 */
+.steps-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+}
+
+.action-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  text-align: center;
+  border: none;
+}
+
+.action-btn.prev {
+  background: #f5f7fa;
+  color: #7f8c8d;
+}
+
+.action-btn.next {
+  background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+  color: #fff;
+}

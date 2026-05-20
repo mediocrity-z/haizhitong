@@ -1,0 +1,62 @@
+<view class="chat-page">
+  <!-- 顶部标题栏 -->
+  <view class="chat-header">
+    <view class="header-title">
+      <text class="header-brand">狮城助手</text>
+      <text class="header-subtitle">新加坡职位咨询 AI 助手</text>
+    </view>
+    <view class="header-status">
+      <view class="status-dot"></view>
+      <text class="status-text">在线</text>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view class="chat-messages" scroll-y scroll-into-view="{{scrollToView}}" scroll-with-animation enhanced show-scrollbar="{{false}}">
+    <view class="messages-container">
+      <!-- 欢迎卡片 -->
+      <view class="welcome-card" wx:if="{{messages.length == 1}}">
+        <view class="welcome-icon">🌏</view>
+        <view class="welcome-title">欢迎来到狮城助手</view>
+        <view class="welcome-desc">
+          我是您的职位咨询 AI 助手，可以为您解答：
+        </view>
+        <view class="welcome-topics">
+          <view class="topic-item">· 新加坡不同签证类型说明</view>
+          <view class="topic-item">· 各行业薪资水平参考</view>
+          <view class="topic-item">· 工作申请流程指引</view>
+          <view class="topic-item">· 职位申请注意事项</view>
+        </view>
+        <view class="welcome-footer">请直接输入您的问题，我会为您详细解答</view>
+      </view>
+
+      <!-- 聊天消息 -->
+      <block wx:for="{{messages}}" wx:key="index">
+        <view wx:if="{{item.role == 'system' && item.type == 'register-guide'}}" class="register-guide-card">
+          <view class="guide-title">需要生成简历吗？</view>
+          <view class="guide-desc">我检测到您有海外求职意向，填写信息后 AI 将为您自动生成简历。</view>
+          <view class="guide-actions">
+            <button class="guide-btn primary" bindtap="goRegister">生成简历</button>
+            <button class="guide-btn" bindtap="continueChat">继续咨询</button>
+          </view>
+        </view>
+        <chat-bubble wx:else message="{{item}}" id="msg-{{index}}" />
+      </block>
+
+      <!-- AI 输入中动画 -->
+      <view class="typing-indicator" wx:if="{{isTyping}}">
+        <view class="typing-dot"></view>
+        <view class="typing-dot"></view>
+        <view class="typing-dot"></view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部输入区 -->
+  <view class="chat-input-bar">
+    <view class="input-wrapper">
+      <input class="chat-input" value="{{inputText}}" placeholder="请输入您的问题..." bindinput="onInputChange" bindconfirm="sendMessage" confirm-type="send" adjust-position="{{true}}" maxlength="500" />
+    </view>
+    <button class="send-btn {{inputText ? 'active' : ''}}" bindtap="sendMessage" disabled="{{!inputText || isTyping}}">发送</button>
+  </view>
+</view>

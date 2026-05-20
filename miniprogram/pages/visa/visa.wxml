@@ -1,0 +1,74 @@
+<view class="visa-page">
+  <view class="page-header">
+    <view class="page-title">签证材料清单</view>
+    <view class="page-subtitle">输入目标国家，获取最新签证材料清单</view>
+  </view>
+
+  <!-- 搜索区 -->
+  <view class="search-section card">
+    <view class="search-row">
+      <input
+        class="country-input"
+        value="{{country}}"
+        placeholder="输入国家名称，如：日本、美国、澳大利亚"
+        bindinput="onCountryInput"
+        bindconfirm="onSearch"
+        maxlength="20"
+      />
+      <button
+        class="search-btn"
+        bindtap="onSearch"
+        disabled="{{!country || loading}}"
+      >{{loading ? '查询中' : '查询'}}</button>
+    </view>
+    <!-- 常见国家快捷入口 -->
+    <view class="quick-countries">
+      <view
+        class="country-tag"
+        wx:for="{{quickCountries}}"
+        wx:key="*this"
+        bindtap="onQuickSearch"
+        data-country="{{item}}"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-card card" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <view class="loading-text">正在查询 {{country}} 签证材料清单...</view>
+  </view>
+
+  <!-- 查询结果 -->
+  <view class="result-card card" wx:if="{{result && !loading}}">
+    <view class="result-header">
+      <view class="result-country">{{country}} 签证材料清单</view>
+      <view class="result-time">{{resultTime}}</view>
+    </view>
+    <view class="result-body">
+      <rich-text nodes="{{result}}" />
+    </view>
+    <view class="result-tip">以上信息由 AI 生成，请以官方最新公告为准</view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view class="history-section" wx:if="{{history.length && !loading}}">
+    <view class="section-title">查询历史</view>
+    <view class="history-list">
+      <view
+        class="history-item"
+        wx:for="{{history}}"
+        wx:key="index"
+        bindtap="onHistoryTap"
+        data-country="{{item}}"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && !result && !history.length}}">
+    <view class="empty-icon">🛂</view>
+    <view class="empty-title">选择目标国家</view>
+    <view class="empty-desc">输入或点击上方国家名称，获取签证材料清单</view>
+  </view>
+</view>
