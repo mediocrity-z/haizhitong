@@ -41,7 +41,7 @@
     "swc": false,
     "disableSWC": true
   },
-  "appid": "wxd10539471fbc6e9c",
+  "appid": "",
   "projectname": "haizhitong",
   "libVersion": "3.3.4",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
