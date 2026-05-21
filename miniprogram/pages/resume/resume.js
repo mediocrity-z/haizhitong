@@ -8,6 +8,14 @@ Page({
     resumeHtml: "",
     resumeStatusText: "",
     enhancing: false,
+    registrationId: "",
+    fromHistory: false,
+  },
+
+  onLoad: function (options) {
+    if (options.id) {
+      this.setData({ registrationId: options.id, fromHistory: true });
+    }
   },
 
   onShow: function () {
@@ -16,8 +24,9 @@ Page({
 
   loadRegistration: function () {
     var that = this;
-
     var app = getApp();
+
+    // 优先使用 latestResume（刚从生成页跳转过来）
     if (app.globalData.latestResume) {
       var r = app.globalData.latestResume;
       that.setData({
@@ -26,15 +35,26 @@ Page({
         resumeStatusText: "已生成",
       });
       delete app.globalData.latestResume;
+      // 如果有 latestResume 就不再查 DB
+      if (!that.data.registrationId) return;
     }
 
-    db.collection("registrations")
-      .orderBy("updateTime", "desc")
-      .limit(1)
-      .get()
+    var query;
+    if (that.data.registrationId) {
+      query = db.collection("registrations").doc(that.data.registrationId).get();
+    } else {
+      query = db.collection("registrations").orderBy("updateTime", "desc").limit(1).get();
+    }
+
+    query
       .then(function (res) {
-        if (res.data.length > 0) {
-          var reg = res.data[0];
+        var reg;
+        if (that.data.registrationId) {
+          reg = res.data;
+        } else {
+          reg = res.data.length > 0 ? res.data[0] : null;
+        }
+        if (reg) {
           var html = that.data.resumeHtml || reg.resumeHtml || "";
           that.setData({
             hasRegistration: true,
@@ -42,10 +62,15 @@ Page({
             resumeHtml: html,
             resumeStatusText: reg.status === "completed" || html ? "已生成" : "待生成",
           });
+        } else if (!that.data.hasRegistration) {
+          that.setData({ hasRegistration: false });
         }
       })
       .catch(function (err) {
         console.error(err);
+        if (!that.data.hasRegistration) {
+          that.setData({ hasRegistration: false });
+        }
       });
   },
 
@@ -56,7 +81,6 @@ Page({
       return;
     }
 
-    // 如果已经是完整 HTML 文档则直接使用，否则包裹
     var full = html;
     if (html.indexOf("<!DOCTYPE") === -1 && html.indexOf("<html") === -1) {
       full = "<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'></head><body>" + html + "</body></html>";
@@ -64,7 +88,6 @@ Page({
 
     var fs = wx.getFileSystemManager();
     var path = wx.env.USER_DATA_PATH + "/resume.html";
-    var that = this;
     fs.writeFile({
       filePath: path,
       data: full,
@@ -75,7 +98,6 @@ Page({
           showMenu: true,
           fileType: "html",
           fail: function () {
-            // openDocument 可能不支持 html，分享文件
             wx.shareFileMessage({
               filePath: path,
               fileName: "我的简历.html",
@@ -95,29 +117,13 @@ Page({
 
   regenerateResume: function () {
     var that = this;
+    var id = that.data.registrationId;
     wx.showModal({
-      title: "重新生成简历",
-      content: "将清除当前简历并跳转到填写页面",
+      title: "重新填写",
+      content: "将跳转到填写页面重新提交信息",
       success: function (modalRes) {
         if (!modalRes.confirm) return;
-        wx.showLoading({ title: "清除中..." });
-        db.collection("registrations")
-          .orderBy("updateTime", "desc")
-          .limit(1)
-          .get()
-          .then(function (dbRes) {
-            if (dbRes.data.length > 0) {
-              return db.collection("registrations").doc(dbRes.data[0]._id).remove();
-            }
-          })
-          .then(function () {
-            wx.hideLoading();
-            wx.switchTab({ url: "/pages/register/register" });
-          })
-          .catch(function (err) {
-            wx.hideLoading();
-            console.error(err);
-          });
+        wx.switchTab({ url: "/pages/register/register" });
       },
     });
   },
@@ -135,7 +141,7 @@ Page({
         that.setData({ enhancing: true });
         wx.showLoading({ title: "AI 优化中..." });
 
-        api.enhanceResume()
+        api.enhanceResume(that.data.registrationId)
           .then(function (res) {
             wx.hideLoading();
             if (res.code === 0) {
@@ -162,5 +168,9 @@ Page({
 
   goRegister: function () {
     wx.switchTab({ url: "/pages/register/register" });
+  },
+
+  goBack: function () {
+    wx.navigateBack();
   },
 });

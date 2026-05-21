@@ -1,0 +1,68 @@
+<view class="profile-page">
+  <!-- 未登录 -->
+  <view class="login-section" wx:if="{{!isLogin}}">
+    <view class="login-avatar-placeholder">
+      <text class="login-icon">👤</text>
+    </view>
+    <view class="login-title">欢迎使用狮城助手</view>
+    <view class="login-desc">登录后可查看简历历史和AI使用次数</view>
+    <button class="btn-primary" bindtap="handleLogin" loading="{{loggingIn}}">微信一键登录</button>
+  </view>
+
+  <!-- 已登录 -->
+  <block wx:if="{{isLogin}}">
+    <!-- 用户头部 -->
+    <view class="page-header profile-header">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" wx:if="{{userInfo.avatarUrl}}" />
+      <view class="avatar avatar-placeholder" wx:if="{{!userInfo.avatarUrl}}">
+        <text>👤</text>
+      </view>
+      <view class="profile-info">
+        <view class="nickname">{{userInfo.nickName || '微信用户'}}</view>
+        <view class="role-tag" wx:if="{{userInfo.role === 'admin'}}">管理员</view>
+      </view>
+    </view>
+
+    <!-- AI 查询次数 -->
+    <view class="card quota-card">
+      <view class="quota-title">今日AI咨询</view>
+      <view class="quota-bar-wrap">
+        <view class="quota-bar">
+          <view class="quota-fill" style="width: {{quotaPercent}}%;"></view>
+        </view>
+        <text class="quota-text">剩余 {{queryRemaining}}/{{queryTotal}} 次</text>
+      </view>
+    </view>
+
+    <!-- 简历历史 -->
+    <view class="section">
+      <view class="section-title">我的简历记录</view>
+
+      <view class="empty-state" wx:if="{{!loading && resumeHistory.length === 0}}">
+        <text class="empty-icon">📄</text>
+        <view class="empty-text">暂无简历记录</view>
+        <view class="empty-desc">去生成一份吧</view>
+        <button class="btn-primary" style="width: 300rpx; margin-top: 24rpx;" bindtap="goGenerate">去生成</button>
+      </view>
+
+      <view class="history-list" wx:if="{{resumeHistory.length > 0}}">
+        <view class="history-item card" wx:for="{{resumeHistory}}" wx:key="_id" bindtap="onTapResume" data-id="{{item._id}}">
+          <view class="history-main">
+            <view class="history-name">{{item.personalInfo.name || '未命名'}}</view>
+            <view class="history-detail">{{item.desiredPosition || '未填职位'}} · {{item.desiredCountry || '未填国家'}}</view>
+            <view class="history-time">{{item.createTime}}</view>
+          </view>
+          <view class="history-status {{item.status === 'completed' ? 'done' : 'pending'}}">
+            {{item.status === 'completed' ? '已生成' : '待生成'}}
+          </view>
+          <view class="history-arrow">›</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 退出登录 -->
+    <view class="logout-area">
+      <button class="logout-btn" bindtap="handleLogout">退出登录</button>
+    </view>
+  </block>
+</view>

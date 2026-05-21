@@ -212,10 +212,17 @@ exports.main = async (event) => {
   if (!_openid) return { code: -1, msg: "缺少用户标识" };
 
   try {
-    var res = await db.collection("registrations").where({ _openid }).get();
-    if (!res.data.length) return { code: -1, msg: "未找到个人信息" };
-
-    var reg = res.data[0];
+    var reg;
+    // 支持按 ID 精确查找（用于历史记录），否则查最新一条
+    if (event.registrationId) {
+      var docRes = await db.collection("registrations").doc(event.registrationId).get();
+      if (!docRes.data) return { code: -1, msg: "未找到该简历记录" };
+      reg = docRes.data;
+    } else {
+      var listRes = await db.collection("registrations").where({ _openid }).orderBy("updateTime", "desc").limit(1).get();
+      if (!listRes.data.length) return { code: -1, msg: "未找到个人信息" };
+      reg = listRes.data[0];
+    }
     var workExps = reg.workExperience || [];
 
     // 只有显式传入 enhance: true 才调用 AI 优化
@@ -248,7 +255,7 @@ exports.main = async (event) => {
       remark: reg.remark || "",
     });
 
-    await db.collection("registrations").where({ _openid }).update({
+    await db.collection("registrations").doc(reg._id).update({
       data: {
         resumeHtml: resumeHtml,
         status: "completed",

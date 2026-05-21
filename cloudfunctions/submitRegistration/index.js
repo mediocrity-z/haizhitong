@@ -28,51 +28,26 @@ exports.main = async (event) => {
   }
 
   try {
-    const exist = await db
-      .collection("registrations")
-      .where({ _openid: wxContext.OPENID })
-      .get();
+    // 每次提交都新增一条记录，支持历史查看
+    const addRes = await db.collection("registrations").add({
+      data: {
+        _openid: wxContext.OPENID,
+        personalInfo,
+        workExperience: workExperience || [],
+        education: education || [],
+        skills: skills || [],
+        desiredPosition: desiredPosition || "",
+        desiredCountry: desiredCountry || "",
+        remark: remark || "",
+        resumeHtml: "",
+        resumeUrl: "",
+        status: "pending",
+        createTime: db.serverDate(),
+        updateTime: db.serverDate(),
+      },
+    });
 
-    if (exist.data.length > 0) {
-      await db
-        .collection("registrations")
-        .where({ _openid: wxContext.OPENID })
-        .update({
-          data: {
-            personalInfo,
-            workExperience: workExperience || [],
-            education: education || [],
-            skills: skills || [],
-            desiredPosition: desiredPosition || "",
-            desiredCountry: desiredCountry || "",
-            remark: remark || "",
-            resumeHtml: "",
-            resumeUrl: "",
-            status: "pending",
-            updateTime: db.serverDate(),
-          },
-        });
-    } else {
-      await db.collection("registrations").add({
-        data: {
-          _openid: wxContext.OPENID,
-          personalInfo,
-          workExperience: workExperience || [],
-          education: education || [],
-          skills: skills || [],
-          desiredPosition: desiredPosition || "",
-          desiredCountry: desiredCountry || "",
-          remark: remark || "",
-          resumeHtml: "",
-          resumeUrl: "",
-          status: "pending",
-          createTime: db.serverDate(),
-          updateTime: db.serverDate(),
-        },
-      });
-    }
-
-    return { code: 0, msg: "信息保存成功" };
+    return { code: 0, msg: "信息保存成功", _id: addRes._id };
   } catch (err) {
     console.error("submitRegistration error:", err);
     return { code: -1, msg: "提交失败" };

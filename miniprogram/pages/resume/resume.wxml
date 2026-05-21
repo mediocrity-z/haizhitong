@@ -2,6 +2,7 @@
   <view class="page-header">
     <view class="page-title">我的简历</view>
     <view class="page-subtitle" wx:if="{{resumeStatusText}}">状态：{{resumeStatusText}}</view>
+    <view class="back-link" wx:if="{{fromHistory}}" bindtap="goBack">← 返回列表</view>
   </view>
 
   <view class="empty-state" wx:if="{{!hasRegistration}}">

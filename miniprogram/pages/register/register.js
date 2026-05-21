@@ -223,8 +223,10 @@ Page({
         return;
       }
 
-      wx.showLoading({ title: "AI 生成简历..." });
-      const genRes = await api.generateResume();
+      var registrationId = saveRes._id;
+
+      wx.showLoading({ title: "生成简历中..." });
+      const genRes = await api.generateResume(registrationId);
 
       wx.hideLoading();
       if (genRes.code == 0) {
@@ -234,7 +236,7 @@ Page({
         };
         wx.showToast({ title: "简历生成成功", icon: "success" });
         setTimeout(function () {
-          wx.navigateTo({ url: "/pages/resume/resume" });
+          wx.navigateTo({ url: "/pages/resume/resume?id=" + registrationId });
         }, 800);
       } else {
         wx.showToast({ title: genRes.msg || "生成失败，请在简历页重试", icon: "none" });

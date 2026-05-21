@@ -5,6 +5,7 @@
     "pages/resume/resume",
     "pages/visa/visa",
     "pages/knowledge/knowledge",
+    "pages/profile/profile",
     "pages/placeholder/placeholder"
   ],
   "window": {
@@ -43,6 +44,12 @@
         "text": "海外生活",
         "iconPath": "images/tab-knowledge.jpg",
         "selectedIconPath": "images/tab-knowledge-active.jpg"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab-admin.jpg",
+        "selectedIconPath": "images/tab-admin-active.jpg"
       }
     ]
   },

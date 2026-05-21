@@ -41,13 +41,13 @@ const api = {
   },
 
   // 生成简历（默认不调AI，秒出）
-  generateResume() {
-    return this.call("generateResume", {});
+  generateResume(registrationId) {
+    return this.call("generateResume", { registrationId: registrationId });
   },
 
   // AI 优化工作经历（会调AI，较慢，需云函数超时60s）
-  enhanceResume() {
-    return this.call("generateResume", { enhance: true }, { timeout: 65000 });
+  enhanceResume(registrationId) {
+    return this.call("generateResume", { enhance: true, registrationId: registrationId }, { timeout: 65000 });
   },
 
   // 签证清单查询
@@ -56,8 +56,8 @@ const api = {
   },
 
   // 登录
-  login() {
-    return this.call("login", {});
+  login(userInfo) {
+    return this.call("login", userInfo || {});
   },
 };
 

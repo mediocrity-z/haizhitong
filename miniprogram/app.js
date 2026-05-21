@@ -19,18 +19,42 @@ App({
   },
 
   checkLogin() {
-    const userInfo = wx.getStorageSync("userInfo");
+    var userInfo = wx.getStorageSync("userInfo");
     if (!userInfo) {
       this.globalData.isLogin = false;
       return;
     }
     this.globalData.userInfo = userInfo;
     this.globalData.isLogin = true;
+    this.globalData.isAdmin = userInfo.role === "admin";
+    this.globalData.queryCount = userInfo.queryCount || 0;
+    this.globalData.lastQueryDate = userInfo.lastQueryDate || "";
+  },
+
+  setLogin(userInfo) {
+    wx.setStorageSync("userInfo", userInfo);
+    this.globalData.userInfo = userInfo;
+    this.globalData.isLogin = true;
+    this.globalData.isAdmin = userInfo.role === "admin";
+    this.globalData.queryCount = userInfo.queryCount || 0;
+    this.globalData.lastQueryDate = userInfo.lastQueryDate || "";
+  },
+
+  logout() {
+    wx.removeStorageSync("userInfo");
+    this.globalData.userInfo = null;
+    this.globalData.isLogin = false;
+    this.globalData.isAdmin = false;
+    this.globalData.queryCount = 0;
+    this.globalData.lastQueryDate = "";
   },
 
   globalData: {
     userInfo: null,
     isLogin: false,
     isAdmin: false,
+    queryCount: 0,
+    lastQueryDate: "",
+    latestResume: null,
   },
 });

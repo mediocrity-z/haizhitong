@@ -3,67 +3,67 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 
 const db = cloud.database();
 
-// 从 env.json 加载配置
 var env = {};
 try { env = require("./env.json"); } catch (e) { /* env.json 不存在时使用环境变量 */ }
 var ADMIN_PASSWORD = env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || "";
 
 exports.main = async (event) => {
-  const wxContext = cloud.getWXContext();
-  const openid = wxContext.OPENID;
+  var wxContext = cloud.getWXContext();
+  var openid = wxContext.OPENID;
+  var { adminPassword, nickName, avatarUrl } = event || {};
 
   try {
-    const { adminPassword } = event;
+    var userRes = await db.collection("users").where({ _openid: openid }).get();
+    var isNew = userRes.data.length === 0;
+    var role = "user";
 
-    if (!ADMIN_PASSWORD) {
-      return { code: -1, msg: "管理员密码未配置" };
-    }
-    if (adminPassword) {
-      if (adminPassword == ADMIN_PASSWORD) {
-        await db
-          .collection("users")
-          .where({ _openid: openid })
-          .update({
-            data: { role: "admin", updateTime: db.serverDate() },
-          });
-      } else {
-        return { code: -1, msg: "密码错误" };
-      }
+    // 管理员密码验证
+    if (adminPassword && ADMIN_PASSWORD && adminPassword === ADMIN_PASSWORD) {
+      role = "admin";
     }
 
-    // 查询用户
-    const res = await db.collection("users").where({ _openid: openid }).get();
-
-    if (res.data.length == 0) {
-      // 新用户，创建记录
-      const role = adminPassword == ADMIN_PASSWORD ? "admin" : "user";
+    if (isNew) {
+      // 新用户创建
       await db.collection("users").add({
         data: {
           _openid: openid,
-          role,
+          role: role,
+          nickName: nickName || "",
+          avatarUrl: avatarUrl || "",
+          queryCount: 0,
+          lastQueryDate: "",
           createTime: db.serverDate(),
+          updateTime: db.serverDate(),
         },
       });
-      // 异步预热签证缓存
-      cloud.callFunction({ name: "seedVisaCache" }).catch(() => { });
+      cloud.callFunction({ name: "seedVisaCache" }).catch(function () {});
       return {
         code: 0,
-        data: { role, isNew: true },
+        data: { openid: openid, nickName: nickName || "", avatarUrl: avatarUrl || "", role: role, queryCount: 0, lastQueryDate: "", isNew: true },
       };
     }
 
-    const role =
-      adminPassword == ADMIN_PASSWORD ? "admin" : res.data[0].role || "user";
+    // 老用户：更新 profile + 必要时提权
+    var user = userRes.data[0];
+    var updateData = { updateTime: db.serverDate() };
+    if (nickName) updateData.nickName = nickName;
+    if (avatarUrl) updateData.avatarUrl = avatarUrl;
+    if (role === "admin" && user.role !== "admin") updateData.role = "admin";
 
-    // 异步预热签证缓存（不阻塞登录返回）
-    cloud.callFunction({ name: "seedVisaCache" }).catch(() => { });
+    await db.collection("users").where({ _openid: openid }).update({ data: updateData });
+
+    cloud.callFunction({ name: "seedVisaCache" }).catch(function () {});
 
     return {
       code: 0,
       data: {
-        role,
+        openid: openid,
+        nickName: nickName || user.nickName || "",
+        avatarUrl: avatarUrl || user.avatarUrl || "",
+        role: updateData.role || user.role || "user",
+        queryCount: user.queryCount || 0,
+        lastQueryDate: user.lastQueryDate || "",
         isNew: false,
-        createTime: res.data[0].createTime,
       },
     };
   } catch (err) {
